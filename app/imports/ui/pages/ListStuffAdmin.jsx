@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { Container, Table, Header, Loader } from 'semantic-ui-react';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import { stuffPublicationNames, Stuffs } from '../../api/stuff/StuffCollection';
 import StuffItemAdmin from '../components/StuffItemAdmin';
 
 const ListStuffAdmin = (props) => {
@@ -40,7 +40,7 @@ ListStuffAdmin.propTypes = {
 /** withTracker connects Meteor data to React components. https://guide.meteor.com/react.html#using-withTracker */
 export default withTracker(() => {
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('StuffAdmin');
+  const subscription = Meteor.subscribe(stuffPublicationNames.stuffAdmin);
   return {
     stuffs: Stuffs.find({}).fetch(),
     ready: subscription.ready(),

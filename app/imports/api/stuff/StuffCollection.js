@@ -1,9 +1,15 @@
+import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { check } from 'meteor/check';
 import { _ } from 'meteor/underscore';
+import { Roles } from 'meteor/alanning:roles';
 import BaseCollection from '../base/BaseCollection';
 
 export const stuffConditions = ['excellent', 'good', 'fair', 'poor'];
+export const stuffPublicationNames = {
+  stuff: 'Stuff',
+  stuffAdmin: 'StuffAdmin',
+};
 
 class StuffCollection extends BaseCollection {
   constructor() {
@@ -70,6 +76,43 @@ class StuffCollection extends BaseCollection {
     this._collection.remove(doc._id);
     return true;
   }
+
+  /**
+   * Default publication method for entities.
+   * It publishes the entire collection.
+   */
+  publish() {
+    if (Meteor.isServer) {
+      /** This subscription publishes only the documents associated with the logged in user */
+      Meteor.publish(stuffPublicationNames.stuff, function publish() {
+        if (this.userId) {
+          const username = Meteor.users.findOne(this.userId).username;
+          return this.find({ owner: username });
+        }
+        return this.ready();
+      });
+
+      /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
+      Meteor.publish(stuffPublicationNames.stuffAdmin, function publish() {
+        if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
+          return this.find();
+        }
+        return this.ready();
+      });
+    }
+  }
+
+  /**
+   * Default subscription method for entities.
+   * It subscribes to the entire collection.
+   */
+  subscribe() {
+    if (Meteor.isClient) {
+      Meteor.subscribe(stuffPublicationNames[0]);
+      Meteor.subscribe(stuffPublicationNames[1]);
+    }
+  }
+
 }
 
 /**

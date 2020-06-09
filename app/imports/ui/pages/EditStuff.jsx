@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import PropTypes from 'prop-types';
 import 'uniforms-bridge-simple-schema-2'; // required for Uniforms
-import { Stuffs } from '../../api/stuff/StuffCollection';
+import { Stuffs, stuffPublicationNames } from '../../api/stuff/StuffCollection';
 import { stuffUpdateMethod } from '../../api/stuff/StuffCollection.methods';
 
 const submit = (data) => {
@@ -58,7 +58,7 @@ export default withTracker(({ match }) => {
   // Get the documentID from the URL field. See imports/ui/layouts/App.jsx for the route containing :_id.
   const documentId = match.params._id;
   // Get access to Stuff documents.
-  const subscription = Meteor.subscribe('Stuff');
+  const subscription = Meteor.subscribe(stuffPublicationNames.stuff);
   return {
     doc: Stuffs.findOne(documentId),
     ready: subscription.ready(),
