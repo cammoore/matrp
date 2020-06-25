@@ -83,11 +83,12 @@ class StuffCollection extends BaseCollection {
    */
   publish() {
     if (Meteor.isServer) {
+      const inst = this;
       /** This subscription publishes only the documents associated with the logged in user */
       Meteor.publish(stuffPublicationNames.stuff, function publish() {
         if (this.userId) {
           const username = Meteor.users.findOne(this.userId).username;
-          return this.find({ owner: username });
+          return inst._collection.find({ owner: username });
         }
         return this.ready();
       });
@@ -95,7 +96,7 @@ class StuffCollection extends BaseCollection {
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
       Meteor.publish(stuffPublicationNames.stuffAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
-          return this.find();
+          return inst._collection.find();
         }
         return this.ready();
       });
@@ -108,8 +109,8 @@ class StuffCollection extends BaseCollection {
    */
   subscribe() {
     if (Meteor.isClient) {
-      Meteor.subscribe(stuffPublicationNames[0]);
-      Meteor.subscribe(stuffPublicationNames[1]);
+      Meteor.subscribe(stuffPublicationNames.stuff);
+      Meteor.subscribe(stuffPublicationNames.stuffAdmin);
     }
   }
 
