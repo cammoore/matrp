@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { ValidatedMethod } from 'meteor/mdg:validated-method';
+import { ValidatedMethod } from 'meteor/maestroqadev:validated-method';
 import { CallPromiseMixin } from 'meteor/didericis:callpromise-mixin';
 import { Stuffs } from './StuffCollection';
 
@@ -12,6 +12,7 @@ import { Stuffs } from './StuffCollection';
 export const stuffDefineMethod = new ValidatedMethod({
   name: 'StuffCollection.define',
   mixins: [CallPromiseMixin],
+  applyOptions: { enhanced: true },
   validate: null,
   run(definitionData) {
     if (Meteor.isServer) {
@@ -26,6 +27,7 @@ export const stuffDefineMethod = new ValidatedMethod({
 export const stuffUpdateMethod = new ValidatedMethod({
   name: 'StuffCollection.update',
   mixins: [CallPromiseMixin],
+  applyOptions: { enhanced: true },
   validate: null,
   run(updateData) {
     Stuffs.update(updateData.id, updateData);
@@ -36,6 +38,7 @@ export const stuffUpdateMethod = new ValidatedMethod({
 export const stuffRemoveItMethod = new ValidatedMethod({
   name: 'StuffCollection.removeIt',
   mixins: [CallPromiseMixin],
+  applyOptions: { enhanced: true },
   validate: null,
   run(instance) {
     return Stuffs.removeIt(instance);

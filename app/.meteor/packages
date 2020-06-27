@@ -19,11 +19,14 @@ shell-server@0.5.0            # Server-side component of the `meteor shell` comm
 insecure@1.0.7                # Allow all DB writes from clients (for prototyping)
 static-html             # Define static page content in .html files
 react-meteor-data       # React higher-order component for reactively tracking Meteor data
+maestroqadev:pub-sub-lite
+
 accounts-password
 aldeed:collection2-core
 aldeed:schema-index
 alanning:roles
-mdg:validated-method
 didericis:callpromise-mixin
 meteortesting:mocha
 xolvio:cleaner
+
+maestroqadev:validated-method

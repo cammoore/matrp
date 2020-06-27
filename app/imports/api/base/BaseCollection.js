@@ -153,7 +153,7 @@ class BaseCollection {
    */
   publish() {
     if (Meteor.isServer) {
-      Meteor.publish(this._collectionName, () => this._collection.find());
+      Meteor.publishLite(this._collectionName, () => this._collection.find());
     }
   }
 
@@ -163,8 +163,7 @@ class BaseCollection {
    */
   subscribe() {
     if (Meteor.isClient) {
-      Meteor.subscribe(this._collectionName);
-      Meteor.subscribe('Stuff');
+      Meteor.subscribeLite(this._collectionName);
     }
   }
 
