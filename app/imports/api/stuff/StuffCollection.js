@@ -94,7 +94,7 @@ class StuffCollection extends BaseCollection {
       });
 
       /** This subscription publishes all documents regardless of user, but only if the logged in user is the Admin. */
-      Meteor.publishLite(stuffPublicationNames.stuffAdmin, function publish() {
+      Meteor.publish(stuffPublicationNames.stuffAdmin, function publish() {
         if (this.userId && Roles.userIsInRole(this.userId, 'admin')) {
           return inst._collection.find();
         }
